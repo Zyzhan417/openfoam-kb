@@ -1,0 +1,288 @@
+{
+ "note": "新题 accept 划定；未读 reports/.orchestrator/phase_summaries/phase_006-runs 与 phase_007-runs、未读 scripts/accept_sets.json 及 scripts/accept_sets/；仅只读直查 ~/.local/share/foamkb/c20_typedef.sqlite (schema 4, 92208 块, rev 2cf4316a)；时间 2026-10-26 (CST)",
+ "rev": "2cf4316a",
+ "generated": "2026-10-26",
+ "questions": [
+  {
+   "qid": "U01",
+   "query": "read settings file and fill defaults for missing entries",
+   "query_user": "这套代码启动时要读一个设置文件。我想找到读这个文件、并且给没写的项填上默认值的那段代码——特别是哪一行决定了某一项没写时该用哪个默认值。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/db/Time/Time.C",
+     "start_line": 99,
+     "evidence": "const word startFrom = controlDict_.lookupOrDefault<word>\n    (\n        \"startFrom\",\n        \"latestTime\"\n    );",
+     "why": "setControls 读 controlDict 的 startFrom 项时用 lookupOrDefault 显式给出缺项默认值 latestTime——这就是\"某项没写时该用哪个默认值\"的那行判据"
+    },
+    {
+     "path": "src/OpenFOAM/db/Time/TimeIO.C",
+     "start_line": 30,
+     "evidence": "if (controlDict_.readIfPresent(\"purgeWrite\", purgeWrite_))\n    {\n        if (purgeWrite_ < 0)",
+     "why": "readDict 是启动时把 controlDict 读进 Time 的那段；readIfPresent 只在键存在时覆盖，缺项就保留类里已有的默认值"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "fts: `controlDict AND default` → 15 块(逐看)；like `controlDict` 221 块 / `lookupOrDefault` 631 / `readIfPresent` 291；列全 src/OpenFOAM/db/Time/ 下 25 个文件并逐读 Time.C(setControls/operator++/setTime)、TimeIO.C(readDict)。命中并排除：controlIOdictionary.C（只做 controlDict 变更重读，无缺项默认值）。"
+  },
+  {
+   "qid": "U02",
+   "query": "lookup table pick implementation by name and error when name unknown",
+   "query_user": "我想找到一张对照表：设置文件里写一个名字，程序就按这个名字去挑一个具体实现。我要的是这张表本身，以及名字写错、对不上任何一项时程序从哪儿报错、报什么。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H",
+     "start_line": 35,
+     "evidence": "typedef HashTable<argNames##ConstructorPtr, word, string::hash>            \\\n        argNames##ConstructorTable;",
+     "why": "这张对照表就是构造函数表：以 word（设置文件里写的名字）为键、构造函数指针为值的 HashTable"
+    },
+    {
+     "path": "src/OpenFOAM/db/Time/userTime/userTime/userTimeNew.C",
+     "start_line": 36,
+     "evidence": "FatalIOErrorInFunction(controlDict)\n                << \"Unknown userTime \" << type << nl << nl\n                << \"Valid userTime types are :\" << nl",
+     "why": "从设置字典读出 type 名字、在构造函数表里 find；查不到就 FatalIOError 打出 Unknown userTime 并列出全部合法名字"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "fts: `runTimeSelection` → 2854 块；like `constructor table` 2 块；like `Valid % types are` + `constructor not in hash table` → src/ 下 24 块、applications/ 下数十块（逐个看是各模型族的 New）；选定通用宏表 + 由 controlDict 驱动的最小实例。"
+  },
+  {
+   "qid": "U03",
+   "query": "print progress line to terminal and decide how often",
+   "query_user": "程序跑起来会不停往屏幕上打进度行。我想找到打这些进度行的那段代码，以及它按什么节奏打。",
+   "accept": [
+    {
+     "path": "applications/solvers/foamRun/foamRun.C",
+     "start_line": 67,
+     "evidence": "Info<< \"Time = \" << runTime.userTimeName() << nl << endl;",
+     "why": "时间推进循环每推进一个时间步打一行 Time = ...；节奏由 while (pimple.run(runTime)) 与 runTime++ 决定"
+    },
+    {
+     "path": "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C",
+     "start_line": 101,
+     "evidence": "os  << indent << solverName_ << \":  Solving for \" << fieldName_;",
+     "why": "每次线性求解结束时打印的进度行（Solving for Ux, Initial residual = ..., Final residual = ..., No Iterations ...）就在这里拼"
+    },
+    {
+     "path": "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C",
+     "start_line": 65,
+     "evidence": "if (nCorr_ > 1)\n        {\n            Info<< control_.algorithmName() << \": Iteration \" << corr_",
+     "why": "外层修正循环的打印节奏：只有 nCorr_ > 1 时才每轮打一行 PIMPLE: Iteration N"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "fts: `progress` → 47 块(无相关)；`printInterval` → 0；`log AND interval` → 弱相关 10 块；like `\"Time = \"` → 15 块；`ClockTime`/`elapsedCpuTime` 只命中 legacy 求解器；`Initial residual`/`Solving for` → 定位 SolverPerformance.C。"
+  },
+  {
+   "qid": "U04",
+   "query": "decide output directory and file name for each result written",
+   "query_user": "程序跑完会把结果写到磁盘上，而且会写很多份。我想找到决定这一份结果放进哪个目录、文件叫什么名字的那段代码，以及名字里的编号是怎么排出来的。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/db/IOobject/IOobject.C",
+     "start_line": 383,
+     "evidence": "return rootPath()/caseName(global)/instance()/db_.dbDir()/local();",
+     "why": "一份结果写到磁盘时落在哪个目录，就是这一行拼出来的：rootPath/算例名/时间名(instance)/dbDir/local"
+    },
+    {
+     "path": "src/OpenFOAM/db/Time/Time.C",
+     "start_line": 1025,
+     "evidence": "dimensionedScalar::name() = timeName(timeToUserTime(newTime));",
+     "why": "每份结果目录的\"编号\"（时间名）在这里被赋成 timeName(...)，IOobject 的 instance 取的就是它"
+    },
+    {
+     "path": "src/OpenFOAM/db/Time/Time.C",
+     "start_line": 628,
+     "evidence": "buf.precision(precision);\n    buf << t;",
+     "why": "编号的排法：把时间值按 format_ 与 precision 送进 ostringstream，位数不够时的补零/截断就发生在这里"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `objectPath` → 12 块；列全 src/OpenFOAM/db/IOobject/*(6 文件) 逐读 IOobject.C 全 40 块(fileNameComponents/path/relativePath/filePath)；Time.C 全 60 块(operator++/setTime/timeName)。"
+  },
+  {
+   "qid": "U05",
+   "query": "resume from previously saved result instead of starting over",
+   "query_user": "我想让程序接着上次存下的那份结果继续算，而不是从头开始。所以我要找到去磁盘上找出上一次存下的那一份、再把它读回来的那段代码。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/db/Time/Time.C",
+     "start_line": 99,
+     "evidence": "else if (startFrom == \"latestTime\")\n        {\n            if (timeDirs.size())\n            {\n                startTime_ = userTimeToTime(timeDirs.last().value());",
+     "why": "startFrom 默认 latestTime：取目录里扫出的时间列表的最后一个，作为\"接着上次存下的那份继续算\"的起点"
+    },
+    {
+     "path": "src/OpenFOAM/db/Time/findTimes.C",
+     "start_line": 24,
+     "evidence": "Searches the current case directory for valid times\n    and sets the time list to these.",
+     "why": "真的去算例目录上找\"上一次存下的那一份\"：findTimes 扫目录得到有效时间列表，供上面的 latestTime 分支取用"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `findTimes` → 25 块；`findInstance` → Time.C 646/673；`startFrom`/`latestTime` → Time.C setControls。"
+  },
+  {
+   "qid": "U06",
+   "query": "split work into pieces for several processes and combine results",
+   "query_user": "程序可以开多个进程一起干同一件事，最后把各自的结果合起来。我想找到把活切成 N 份、分给各进程的那段代码，以及最后收回来汇总的那段。",
+   "accept": [
+    {
+     "path": "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.C",
+     "start_line": 104,
+     "evidence": "nProcessors_(decompositionDict.lookup<label>(\"numberOfSubdomains\"))",
+     "why": "活切成 N 份里的 N 就是这里从 decomposeParDict 的 numberOfSubdomains 读出来的；decompose() 返回每个单元归哪个进程"
+    },
+    {
+     "path": "src/OpenFOAM/db/IOstreams/Pstreams/PstreamReduceOps.H",
+     "start_line": 27,
+     "evidence": "Inter-processor communication reduction functions.",
+     "why": "最后收回汇总的那一族函数：把各进程的值按二元算子合成一个"
+    },
+    {
+     "path": "src/OpenFOAM/db/IOstreams/Pstreams/PstreamReduceOps.H",
+     "start_line": 63,
+     "evidence": "Pstream::gather(comms, Value, bop, tag, comm);\n    Pstream::scatter(comms, Value, tag, comm);",
+     "why": "汇总的具体走法：先 gather 到根进程做 bop，再 scatter 回去，于是每个进程都拿到同一份合并结果"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `decompose` → 514 块 / `reduce` → 811 块；列全 src/parallel/decompose/* 与 src/OpenFOAM/db/IOstreams/Pstreams/*(19 文件) 逐读 decompositionMethod.C 全 70 块、PstreamReduceOps.H 全 12 块。"
+  },
+  {
+   "qid": "U07",
+   "query": "parse command line options and dispatch to the action",
+   "query_user": "我想搞清楚命令行参数是怎么解析的：有哪些可选项、哪个参数决定程序这次要干什么、解析完之后在哪儿分派到具体的动作。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/global/argList/argList.C",
+     "start_line": 522,
+     "evidence": "options_.insert(optionName, args_[argi]);\n            }\n            else\n            {\n                options_.insert(optionName, \"\");",
+     "why": "argv 逐项扫描：以 - 开头的按有无取值分成 options_ 里的 name 到 value 与 name 到空串两项，其余进 args_；可选项怎么解析、哪个参数带值就在这儿"
+    },
+    {
+     "path": "src/OpenFOAM/global/argList/argList.C",
+     "start_line": 604,
+     "evidence": "//   -help    print the usage\n    //   -doc     display application documentation in browser\n    //   -srcDoc  display source code in browser",
+     "why": "解析之后的动作分派就在 parse() 开头：-help/-doc/-srcDoc 这类参数决定这次是打用法、开浏览器还是继续正常算"
+    },
+    {
+     "path": "src/OpenFOAM/global/argList/argList.H",
+     "start_line": 27,
+     "evidence": "Extract command arguments and options from the supplied\n    \\a argc and \\a argv parameters.",
+     "why": "argList 的职责说明：从 argc/argv 里把参数与选项抽出来"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `argList` → 503 块；列全 src/OpenFOAM/global/argList/*(4 文件)；argList.C 全 58 块逐读(构造 446/522、parse 604、regroupArgv 319)。"
+  },
+  {
+   "qid": "U08",
+   "query": "report error for bad settings file with file name and line number",
+   "query_user": "设置文件写错时程序会报一条错。我想找到拼这条报错文字的那段代码——尤其是它怎么把哪个文件、第几行这种定位信息带出来的。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/db/error/IOerror.C",
+     "start_line": 59,
+     "evidence": "IOerrorLocation(const dictionary& dict)\n:\n    ioFileName_(dict.name()),\n    ioStartLineNumber_(dict.startLineNumber()),",
+     "why": "行号不是硬写的：由出错的那个 dictionary 自带的 startLineNumber 传进来，所以报错能指到具体哪一行"
+    },
+    {
+     "path": "src/OpenFOAM/db/error/IOerror.C",
+     "start_line": 119,
+     "evidence": "<< \"file: \" << ioStream.name()\n            << \" at line \" << ioStream.lineNumber()",
+     "why": "这条报错文字把文件和第几行一起拼出来：\"file: <名字> at line <行号>\"，定位信息就是从输入流的 name()/lineNumber() 取的"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `IOerror` → 655 块；列全 src/OpenFOAM/db/error/*；IOerror.C 全 16 块逐读(IOerrorLocation 三构造/operator<< 282/SafeFatalIOError 100)。"
+  },
+  {
+   "qid": "U09",
+   "query": "read table of values from file and compute value when exact match missing",
+   "query_user": "有些输入是从外部文件读一张数值表，然后拿一个值去表里查。我想找到读这张表的代码，以及表里没有正好对上的值时、中间的值怎么算出来的那段。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C",
+     "start_line": 48,
+     "evidence": "// Expand the file\n    fileName fNameExpanded(fName_);\n    fNameExpanded.expand();\n\n    // Open a stream and check it\n    autoPtr<ISstream> isPtr(fileHandler().NewIFstream(fNameExpanded));",
+     "why": "外部数值表就是这么读进来的：先展开文件名，再开输入流，随后 read(is, table) 解析成 (x, 值) 列表"
+    },
+    {
+     "path": "src/OpenFOAM/primitives/functions/Function1/Table/Table.C",
+     "start_line": 269,
+     "evidence": "forAll(indices_, i)\n    {\n        y += weights_[i]*values_[indices_[i]].second();",
+     "why": "表里没有正好对上的 x 时：value() 先用 valueWeights 算出夹住 x 的那几点的权重，这里再对这些值加权求和"
+    },
+    {
+     "path": "src/OpenFOAM/primitives/functions/Function1/UniformTable1/UniformTable1.C",
+     "start_line": 61,
+     "evidence": "const scalar xi = low_ + i*delta_;\n    const scalar lambda = (x - xi)/delta_;\n\n    return values_[i] + lambda*(values_[i + 1] - values_[i]);",
+     "why": "等距表里最直白的补值公式：定出 x 落在第 i 格、算出格内比例 lambda，再在两端值之间线性插值"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `interpolation` → 1093 块 / `table` → 6243 块；`interpolationTable` → 0(该类在 13 版已拆成 Table/TableReader/UniformTable1)；列全 src/OpenFOAM/primitives/functions/Function1/Table/*(24 文件)+UniformTable1/*，逐读 TableFileReader.C / Table.C / UniformTable1.C。"
+  },
+  {
+   "qid": "U10",
+   "query": "decide when the calculation is good enough to stop and cap the number of rounds",
+   "query_user": "我希望程序该停的时候自己停下来。所以要找到判断已经算得够稳、可以收工的那段代码，以及决定最多干多少轮的那段。",
+   "accept": [
+    {
+     "path": "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/singleRegionConvergenceControl/singleRegionConvergenceControl.C",
+     "start_line": 144,
+     "evidence": "const bool absCheck = residual < residualControl_[fieldi].absTol;\n\n            cs.satisfied = cs.satisfied && absCheck;",
+     "why": "判断算得够不够稳：各场当前残差与设置里的 tolerance（absTol）逐个比，全达标才置 satisfied，这就是可以收工的条件"
+    },
+    {
+     "path": "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C",
+     "start_line": 36,
+     "evidence": "nCorr_ = control_.dict().lookupOrDefault<label>(\"nOuterCorrectors\", 1);",
+     "why": "最多干多少轮：外层修正次数 nCorr_ 从设置读 nOuterCorrectors，没写就取 1 轮"
+    },
+    {
+     "path": "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C",
+     "start_line": 65,
+     "evidence": "if (corr_ >= nCorr_)\n        {\n            if (convergence.hasCorrResidualControls() && nCorr_ > 1)\n            {\n                Info<< control_.algorithmName() << \": Not converged within \"",
+     "why": "两个判据在这里合流：上轮已 converged 就提前收工并打印 Converged in N iterations；否则轮数到 nCorr_ 就打印 Not converged within N iterations 停下"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `convergence` → 138 块；`nOuterCorrectors` → 全库仅 1 块(pimpleLoop.C read)；`absTol` → 26 块；`maxIter` → 多处(线性求解器控制，非外层轮数)；列全 src/finiteVolume/cfdTools/general/solutionControl/*(26 文件) 并读 singleRegionConvergenceControl.C / pimpleLoop.C。"
+  },
+  {
+   "qid": "U11",
+   "query": "check units from settings file and convert or reject mismatched units",
+   "query_user": "设置文件里的数值有时带单位。我想找到读进来之后检查单位、并在单位不一致时换算或直接报错的那段代码。",
+   "accept": [
+    {
+     "path": "src/OpenFOAM/unitConversion/unitConversionIO.C",
+     "start_line": 41,
+     "evidence": "FatalIOErrorInFunction(dict)\n            << \"The units \" << units.info() << \" of \" << keyword\n            << \" in dictionary \" << dict.name() << \" do not match \"",
+     "why": "从设置里读出 [单位] 之后立刻 compare：维度对不上就 FatalIOError 报 The units ... do not match the required units，不换算直接报错的那条路"
+    },
+    {
+     "path": "src/OpenFOAM/unitConversion/unitConversionTemplates.C",
+     "start_line": 28,
+     "evidence": "return standard() ? t : t*multiplier_;",
+     "why": "量纲对得上但换算因子不同时走这一行：把读进来的数乘 multiplier_ 转成标准单位的值"
+    },
+    {
+     "path": "src/OpenFOAM/unitConversion/unitConversion.C",
+     "start_line": 157,
+     "evidence": "if (!unitConversion::compare(a, b, true))\n    {\n        FatalErrorInFunction\n            << \"Different units for +\"",
+     "why": "带单位的量相加时再查一次单位一致（连换算因子一起比），不一致直接 FatalError: Different units for +"
+    }
+   ],
+   "no_statement_found": false,
+   "search_log": "like `unitConversion` → 448 块；列全 src/OpenFOAM/unitConversion/*(9 文件) 逐读 unitConversion.C/IO.C/Templates.C；另查 dimensionedType 家族未取(只做量纲存储，不做不一致报错)。"
+  },
+  {
+   "qid": "U12",
+   "query": "create temporary working directory and remove it on success keep on failure",
+   "query_user": "跑的时候会建临时目录或临时文件。我想找到建的那段代码，以及成功就删掉、失败就留下来这个判断写在哪。",
+   "accept": [],
+   "no_statement_found": true,
+   "search_log": "like `mkDir` → 90 块 / `rmDir` → 25 块 / `temporary` → 163 块 / `temporary`+remove → 7 块 / `cleanup` → 少量 / `purge` → 22 / `backup|bak` → 15；`temp dir`、`temporary directory`、`scratch`、`tempName`、`tmpName`、`workDir`、`rename(`、`keepFiles`、`deleteFiles`、`removeOn` 逐一查 → 0 相关；另读 dynamicCode.C 全 40 块、codeStream.C 全 30 块、TimeIO.C writeObject(265)、fileOperation 各 rmDir/writeObject 块。只找到若干“留/删旧文件”的开关(foamToVTK.C:368、foamToTecplot360.C:251、blockMesh.C:127 的 -noClean、TimeIO.C 的 purgeWrite)，判据都不是“本次是否成功”，因此不给文件。"
+  }
+ ]
+}

@@ -1,0 +1,221 @@
+{
+  "note": "盲复核独立划定（S2）；未读 reports/.orchestrator/phase_summaries/phase_006-runs/ 与 scripts/accept_sets*；判据为逐字读 filedoc/块正文；时间 2026-10-26T14:56:23+08:00；索引 rev 2cf4316a schema 4 chunks 92208",
+  "questions": [
+    {
+      "qid": "Q01",
+      "query": "incompressible turbulence model",
+      "accept": [
+        {
+          "path": "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H",
+          "start_line": 27,
+          "evidence": "Base class for single-phase incompressible turbulence models.",
+          "why": "filedoc 自述为「单相不可压湍流模型的基类」，正对查询对象"
+        },
+        {
+          "path": "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H",
+          "start_line": 33,
+          "evidence": "Typedefs for turbulence, RAS and LES models for incompressible flow",
+          "why": "为不可压流动给出 turbulence/RAS/LES 模型的 typedef 选择入口"
+        }
+      ]
+    },
+    {
+      "qid": "Q02",
+      "query": "wall function for nut",
+      "accept": [
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H",
+          "start_line": 27,
+          "evidence": "This boundary condition provides a turbulent kinematic viscosity condition\n    when using wall functions, based on turbulence kinetic energy.",
+          "why": "nut 壁面函数的基类，明确写「壁函数下的湍动运动黏度条件」"
+        },
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H",
+          "start_line": 27,
+          "evidence": "Turbulent viscosity wall-function boundary condition\n    for high Reynolds number flows based on near-wall turbulence kinetic energy.",
+          "why": "高雷诺数下基于近壁湍动能的 nut 壁函数，是实际使用的实现"
+        }
+      ]
+    },
+    {
+      "qid": "Q03",
+      "query": "turbulent kinetic energy dissipation",
+      "accept": [
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.C",
+          "start_line": 173,
+          "evidence": "// Dissipation equation\n    tmp<fvScalarMatrix> epsEqn\n    (\n        fvm::ddt(alpha, rho, epsilon_)",
+          "why": "correct() 里以注释「Dissipation equation」组装 epsilon 离散方程，即湍动能耗散率的方程"
+        },
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/RAS/derivedFvFieldSources/turbulentMixingLengthDissipationRate/turbulentMixingLengthDissipationRateFvScalarFieldSource.H",
+          "start_line": 27,
+          "evidence": "This source condition provides a turbulence dissipation, \\f$\\epsilon\\f$\n    (epsilon), based on a specified mixing length.",
+          "why": "正文直接说明如何由混合长度给出湍流耗散 epsilon"
+        }
+      ]
+    },
+    {
+      "qid": "Q04",
+      "query": "spalart allmaras turbulence model",
+      "accept": [
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H",
+          "start_line": 27,
+          "evidence": "Spalart-Allmaras one-eqn mixing-length model for incompressible and\n    compressible external flows.",
+          "why": "filedoc 即该单方程模型的实现说明（含系数表）"
+        }
+      ]
+    },
+    {
+      "qid": "Q05",
+      "query": "finite volume mesh",
+      "accept": [
+        {
+          "path": "src/finiteVolume/fvMesh/fvMesh.H",
+          "start_line": 27,
+          "evidence": "Mesh data needed to do the Finite Volume discretisation.",
+          "why": "fvMesh 自述为有限体积离散所需的网格数据，是 FV 网格本体"
+        },
+        {
+          "path": "src/finiteVolume/volMesh/volMesh.H",
+          "start_line": 27,
+          "evidence": "Mesh data needed to do the Finite Volume discretisation.",
+          "why": "体网格标签类，同为「有限体积离散的网格数据」并附 isVolMesh 断言"
+        }
+      ]
+    },
+    {
+      "qid": "Q08",
+      "query": "how is the pressure level fixed in a closed domain",
+      "accept": [
+        {
+          "path": "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H",
+          "start_line": 27,
+          "evidence": "Provides controls for the pressure reference in closed-volume simulations",
+          "why": "filedoc 明确：为闭体积（封闭域）模拟提供压力参考控制"
+        },
+        {
+          "path": "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H",
+          "start_line": 27,
+          "evidence": "Find the reference cell nearest (in index) to the given cell but which\n    is not on a cyclic, symmetry or processor patch.",
+          "why": "给出参考单元（refCell）如何选取，即压力水平被钉住的位置"
+        }
+      ]
+    },
+    {
+      "qid": "Q09",
+      "query": "how is the mesh split across processors",
+      "accept": [
+        {
+          "path": "applications/utilities/parallelProcessing/decomposePar/decomposePar.C",
+          "start_line": 27,
+          "evidence": "Automatically decomposes a mesh and fields of a case for parallel\n    execution of OpenFOAM.",
+          "why": "decomposePar 工具自述：把网格与场分解到并行执行的各处理器"
+        },
+        {
+          "path": "src/parallel/parallel/domainDecomposition/domainDecomposition.H",
+          "start_line": 27,
+          "evidence": "Automatic domain decomposition class for finite-volume meshes",
+          "why": "域分解类，把 FV 网格切成各处理器子域"
+        }
+      ]
+    },
+    {
+      "qid": "Q10",
+      "query": "how are field values mapped from cells to faces",
+      "accept": [
+        {
+          "path": "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+          "start_line": 27,
+          "evidence": "Cell to surface interpolation scheme. Included in fvMesh.",
+          "why": "「单元到面」插值方案类，挂在 fvMesh 上，正是体心值映射到面的机制"
+        },
+        {
+          "path": "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H",
+          "start_line": 27,
+          "evidence": "Abstract base class for surface interpolation schemes.",
+          "why": "面插值方案的抽象基类，具体映射规则（linear/upwind 等）都由它派生"
+        }
+      ]
+    },
+    {
+      "qid": "Q11",
+      "query": "how does the solver move the mesh",
+      "accept": [
+        {
+          "path": "applications/modules/movingMesh/movingMesh.H",
+          "start_line": 27,
+          "evidence": "Solver module to move the mesh.\n\n    Executes the mover, topoChanger and distributor specified in the\n    dynamicMeshDict.",
+          "why": "「移动网格的求解器模块」，执行 dynamicMeshDict 指定的 mover/topoChanger/distributor"
+        },
+        {
+          "path": "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H",
+          "start_line": 27,
+          "evidence": "These classes move the mesh points, update the cell volumes and generate\n    the corresponding mesh fluxes without any topology change.",
+          "why": "mesh mover 基类：移动网格点、更新单元体积并生成网格通量"
+        }
+      ]
+    },
+    {
+      "qid": "Q12",
+      "query": "what stops a run when residuals stop falling",
+      "accept": [
+        {
+          "path": "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H",
+          "start_line": 27,
+          "evidence": "Convergence control class. Provides methods to check the convergence of the\n    time loop against an absolute residual tolerance.",
+          "why": "时间步循环按绝对残差容差判收敛，即 residualControl 触发停止的判据"
+        },
+        {
+          "path": "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/correctorConvergenceControl/correctorConvergenceControl.H",
+          "start_line": 27,
+          "evidence": "Corrector convergence control class. Provides methods to check the\n    convergence of an inner iteration loop (e.g., pimple) against both absolute\n    and relative residual tolerances.",
+          "why": "内迭代（pimple）按绝对/相对残差容差提前结束"
+        }
+      ]
+    },
+    {
+      "qid": "Q13",
+      "query": "how is a scalar transport equation assembled into a matrix",
+      "accept": [
+        {
+          "path": "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H",
+          "start_line": 27,
+          "evidence": "A special matrix type and solver, designed for finite volume\n    solutions of scalar equations.\n    Face addressing is used to make all matrix assembly\n    and solution loops vectorise.",
+          "why": "fvMatrix 专为标量方程的有限体积解设计，正文直接讲「矩阵装配」"
+        },
+        {
+          "path": "src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.H",
+          "start_line": 27,
+          "evidence": "A scalar instance of fvMatrix",
+          "why": "fvScalarMatrix 是标量输运方程实际组装的矩阵类型"
+        },
+        {
+          "path": "src/finiteVolume/finiteVolume/fvm/fvm.H",
+          "start_line": 27,
+          "evidence": "Namespace of functions to calculate implicit derivatives returning a\n    matrix.",
+          "why": "fvm:: 命名空间提供隐式离散算子，其返回值就是装配好的矩阵"
+        }
+      ]
+    },
+    {
+      "qid": "Q14",
+      "query": "how is turbulence dissipation handled at the wall",
+      "accept": [
+        {
+          "path": "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H",
+          "start_line": 27,
+          "evidence": "This boundary condition provides a turbulence dissipation wall constraint\n    for low- and high-Reynolds number turbulence models.",
+          "why": "壁面 epsilon 壁函数边界条件：给出近壁耗散值并按 y+ 切换层流/湍流分支"
+        },
+        {
+          "path": "src/MomentumTransportModels/phaseCompressible/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonmWallFunction/epsilonmWallFunctionFvPatchScalarField.H",
+          "start_line": 27,
+          "evidence": "This boundary condition provides a turbulence dissipation wall constraint\n    for the mixtureKEpsilon model",
+          "why": "混合（mixtureKEpsilon）情形下的耗散壁面约束"
+        }
+      ]
+    }
+  ]
+}

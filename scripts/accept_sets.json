@@ -1,0 +1,860 @@
+{
+ "note": "由 build_accept_sets.py 从 raw_s1/raw_s2/raw_new/raw_new_s2 生成；四口径 = s1 / s2 / 交集 / 并集，不做人工合并",
+ "calibers": [
+  "s1",
+  "s2",
+  "inter",
+  "union"
+ ],
+ "questions": {
+  "Q01": {
+   "panel": "old",
+   "s1": [
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H",
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H"
+   ],
+   "s2": [
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H",
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H"
+   ],
+   "inter": [
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H",
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H"
+   ],
+   "union": [
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H",
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H": {
+     "start_line": 33,
+     "evidence": "Typedefs for turbulence, RAS and LES models for incompressible flow",
+     "why": "filedoc 直接声明本文件定义的是「用于不可压流动的湍流、RAS 与 LES 模型」的 typedef。"
+    },
+    "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModel.H": {
+     "start_line": 27,
+     "evidence": "Base class for single-phase incompressible turbulence models.",
+     "why": "声明这是所有单相不可压湍流模型的基类，是本类模型的抽象接口所在。"
+    }
+   }
+  },
+  "Q02": {
+   "panel": "old",
+   "s1": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutUSpaldingWallFunction/nutUSpaldingWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H"
+   ],
+   "s2": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H"
+   ],
+   "inter": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H"
+   ],
+   "union": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutUSpaldingWallFunction/nutUSpaldingWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutkWallFunction/nutkWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "Turbulent viscosity wall-function boundary condition",
+     "why": "正文直接自称「湍流粘度壁函数边界条件」，按近壁湍动能算 nut。"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutWallFunction/nutWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "This boundary condition provides a turbulent kinematic viscosity condition",
+     "why": "nut 壁函数体系的基类，正文说它提供「湍流运动粘度」的边界条件（即 nut 的壁面处理）。"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutUSpaldingWallFunction/nutUSpaldingWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "Spalding's law to give a continuous nut profile to the wall (y+ = 0)",
+     "why": "用 Spalding 律给出直到壁面 y+=0 的连续 nut 剖面，是 nut 壁函数的一个具体实现。"
+    }
+   }
+  },
+  "Q03": {
+   "panel": "old",
+   "s1": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.H",
+    "src/functionObjects/field/turbulenceFields/turbulenceFields.H"
+   ],
+   "s2": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/derivedFvFieldSources/turbulentMixingLengthDissipationRate/turbulentMixingLengthDissipationRateFvScalarFieldSource.H",
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.C"
+   ],
+   "inter": [],
+   "union": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/derivedFvFieldSources/turbulentMixingLengthDissipationRate/turbulentMixingLengthDissipationRateFvScalarFieldSource.H",
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.C",
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.H",
+    "src/functionObjects/field/turbulenceFields/turbulenceFields.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/functionObjects/field/turbulenceFields/turbulenceFields.H": {
+     "start_line": 27,
+     "evidence": "epsilon     | turbulence kinetic energy dissipation rate",
+     "why": "filedoc 的字段表逐条给出 epsilon = turbulence kinetic energy dissipation rate。"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.H": {
+     "start_line": 160,
+     "evidence": "Return the turbulence kinetic energy dissipation rate",
+     "why": "class 块的成员注释把 epsilon 逐字定义为「湍动能耗散率」，模型求解该量的输运方程。"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.C": {
+     "start_line": 173,
+     "evidence": "// Dissipation equation\n    tmp<fvScalarMatrix> epsEqn\n    (\n        fvm::ddt(alpha, rho, epsilon_)",
+     "why": "correct() 里以注释「Dissipation equation」组装 epsilon 离散方程，即湍动能耗散率的方程"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/RAS/derivedFvFieldSources/turbulentMixingLengthDissipationRate/turbulentMixingLengthDissipationRateFvScalarFieldSource.H": {
+     "start_line": 27,
+     "evidence": "This source condition provides a turbulence dissipation, \\f$\\epsilon\\f$\n    (epsilon), based on a specified mixing length.",
+     "why": "正文直接说明如何由混合长度给出湍流耗散 epsilon"
+    }
+   }
+  },
+  "Q04": {
+   "panel": "old",
+   "s1": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H"
+   ],
+   "s2": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H"
+   ],
+   "inter": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H"
+   ],
+   "union": [
+    "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H": {
+     "start_line": 27,
+     "evidence": "Spalart-Allmaras one-eqn mixing-length model for incompressible and",
+     "why": "filedoc 首句即定义该模型（单方程混合长度），并说明省略 trip 项与 Stilda 截断。"
+    }
+   }
+  },
+  "Q05": {
+   "panel": "old",
+   "s1": [
+    "src/OpenFOAM/meshes/polyMesh/polyMesh.H",
+    "src/finiteVolume/fvMesh/fvMesh.H"
+   ],
+   "s2": [
+    "src/finiteVolume/fvMesh/fvMesh.H",
+    "src/finiteVolume/volMesh/volMesh.H"
+   ],
+   "inter": [
+    "src/finiteVolume/fvMesh/fvMesh.H"
+   ],
+   "union": [
+    "src/OpenFOAM/meshes/polyMesh/polyMesh.H",
+    "src/finiteVolume/fvMesh/fvMesh.H",
+    "src/finiteVolume/volMesh/volMesh.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/fvMesh/fvMesh.H": {
+     "start_line": 27,
+     "evidence": "Mesh data needed to do the Finite Volume discretisation.",
+     "why": "filedoc 首句定义 fvMesh 即有限体积离散所需的网格数据，并说明几何量按需删除重算。"
+    },
+    "src/OpenFOAM/meshes/polyMesh/polyMesh.H": {
+     "start_line": 27,
+     "evidence": "Mesh consisting of general polyhedral cells.",
+     "why": "声明其承载的是一般多面体单元构成的网格，是 fvMesh 的拓扑基类。"
+    },
+    "src/finiteVolume/volMesh/volMesh.H": {
+     "start_line": 27,
+     "evidence": "Mesh data needed to do the Finite Volume discretisation.",
+     "why": "体网格标签类，同为「有限体积离散的网格数据」并附 isVolMesh 断言"
+    }
+   }
+  },
+  "Q08": {
+   "panel": "old",
+   "s1": [
+    "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H",
+    "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H"
+   ],
+   "s2": [
+    "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H",
+    "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H"
+   ],
+   "inter": [
+    "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H",
+    "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H"
+   ],
+   "union": [
+    "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H",
+    "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H": {
+     "start_line": 27,
+     "evidence": "Provides controls for the pressure reference in closed-volume simulations",
+     "why": "filedoc 说明该文件提供闭腔模拟的压力参考控制，用 refCell/refValue 把压力水平定住。"
+    },
+    "src/finiteVolume/cfdTools/general/findRefCell/findRefCell.H": {
+     "start_line": 36,
+     "evidence": "If the field fieldRef needs referencing find the reference cell nearest",
+     "why": "函数注释说明字段需要定参考水平时如何挑出参考单元并回填 refCelli/refValue。"
+    }
+   }
+  },
+  "Q09": {
+   "panel": "old",
+   "s1": [
+    "applications/utilities/parallelProcessing/decomposePar/decomposePar.C",
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.H",
+    "src/parallel/parallel/domainDecomposition/domainDecomposition.H"
+   ],
+   "s2": [
+    "applications/utilities/parallelProcessing/decomposePar/decomposePar.C",
+    "src/parallel/parallel/domainDecomposition/domainDecomposition.H"
+   ],
+   "inter": [
+    "applications/utilities/parallelProcessing/decomposePar/decomposePar.C",
+    "src/parallel/parallel/domainDecomposition/domainDecomposition.H"
+   ],
+   "union": [
+    "applications/utilities/parallelProcessing/decomposePar/decomposePar.C",
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.H",
+    "src/parallel/parallel/domainDecomposition/domainDecomposition.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/parallel/parallel/domainDecomposition/domainDecomposition.H": {
+     "start_line": 27,
+     "evidence": "Automatic domain decomposition class for finite-volume meshes",
+     "why": "filedoc 声明该类负责有限体积网格的自动区域分解（complete mesh ↔ processor meshes）。"
+    },
+    "applications/utilities/parallelProcessing/decomposePar/decomposePar.C": {
+     "start_line": 27,
+     "evidence": "Automatically decomposes a mesh and fields of a case for parallel",
+     "why": "工具入口说明 decomposePar 把 case 的网格与场自动分解以便并行执行。"
+    },
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.H": {
+     "start_line": 125,
+     "evidence": "Return for every coordinate the wanted processor number",
+     "why": "分解方法接口的注释：为每个单元/点返回所属处理器号，「切分」就定义在这里。"
+    }
+   }
+  },
+  "Q10": {
+   "panel": "old",
+   "s1": [
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolate.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H"
+   ],
+   "s2": [
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H"
+   ],
+   "inter": [
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H"
+   ],
+   "union": [
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolate.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H": {
+     "start_line": 27,
+     "evidence": "Cell to surface interpolation scheme. Included in fvMesh.",
+     "why": "filedoc 直接说明这是「体元到面」的插值机制，并被 fvMesh 内嵌持有。"
+    },
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolate.H": {
+     "start_line": 89,
+     "evidence": "Interpolate field onto faces using scheme given by Istream",
+     "why": "fvc::interpolate 的函数注释逐字说明把体场按指定格式插值到面上。",
+     "basename_shared": true
+    },
+    "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolationScheme/surfaceInterpolationScheme.H": {
+     "start_line": 137,
+     "evidence": "Return the face-interpolate of the given cell field",
+     "why": "基类注释说明用 owner/neighbour 权重把单元场求成面插值值。"
+    }
+   }
+  },
+  "Q11": {
+   "panel": "old",
+   "s1": [
+    "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H",
+    "src/fvMotionSolver/fvMotionSolvers/fvMotionSolver/fvMotionSolver.H",
+    "src/motionSolvers/motionSolver/motionSolver.H"
+   ],
+   "s2": [
+    "applications/modules/movingMesh/movingMesh.H",
+    "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H"
+   ],
+   "inter": [
+    "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H"
+   ],
+   "union": [
+    "applications/modules/movingMesh/movingMesh.H",
+    "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H",
+    "src/fvMotionSolver/fvMotionSolvers/fvMotionSolver/fvMotionSolver.H",
+    "src/motionSolvers/motionSolver/motionSolver.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/fvMotionSolver/fvMotionSolvers/fvMotionSolver/fvMotionSolver.H": {
+     "start_line": 27,
+     "evidence": "Base class for fvMesh based motionSolvers.",
+     "why": "声明这是面向 fvMesh 的运动求解器基类，即求解器循环里实际驱动的对象。"
+    },
+    "src/motionSolvers/motionSolver/motionSolver.H": {
+     "start_line": 27,
+     "evidence": "Virtual base class for mesh motion solver.",
+     "why": "声明这是网格运动求解器的虚基类，其 solve() 产出新点位置再交给网格更新。"
+    },
+    "src/finiteVolume/fvMesh/fvMeshMovers/fvMeshMover/fvMeshMover.H": {
+     "start_line": 27,
+     "evidence": "These classes move the mesh points, update the cell volumes and generate",
+     "why": "filedoc 逐字给出动作序列：移动网格点、更新单元体积、生成对应网格通量。"
+    },
+    "applications/modules/movingMesh/movingMesh.H": {
+     "start_line": 27,
+     "evidence": "Solver module to move the mesh.\n\n    Executes the mover, topoChanger and distributor specified in the\n    dynamicMeshDict.",
+     "why": "「移动网格的求解器模块」，执行 dynamicMeshDict 指定的 mover/topoChanger/distributor"
+    }
+   }
+  },
+  "Q12": {
+   "panel": "old",
+   "s1": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleSingleRegionControl/pimpleSingleRegionControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/simpleControl/simpleControl.H"
+   ],
+   "s2": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/correctorConvergenceControl/correctorConvergenceControl.H"
+   ],
+   "inter": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H"
+   ],
+   "union": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/correctorConvergenceControl/correctorConvergenceControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleSingleRegionControl/pimpleSingleRegionControl.H",
+    "src/finiteVolume/cfdTools/general/solutionControl/simpleControl/simpleControl.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleSingleRegionControl/pimpleSingleRegionControl.H": {
+     "start_line": 27,
+     "evidence": "Pimple single region control class. Provides time-loop control methods",
+     "why": "filedoc 同样说明时间循环方法在收敛判据达成时退出模拟。"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H": {
+     "start_line": 121,
+     "evidence": "End the run if convergence has been reached",
+     "why": "class 块给出 endIfConverged(Time&)：残差判据满足后结束运行的方法。"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/simpleControl/simpleControl.H": {
+     "start_line": 27,
+     "evidence": "Simple control class. Provides time-loop control methods which exit the",
+     "why": "filedoc 说明其时间循环方法在收敛判据达成时结束模拟。"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/correctorConvergenceControl/correctorConvergenceControl.H": {
+     "start_line": 27,
+     "evidence": "Corrector convergence control class. Provides methods to check the\n    convergence of an inner iteration loop (e.g., pimple) against both absolute\n    and relative residual tolerances.",
+     "why": "内迭代（pimple）按绝对/相对残差容差提前结束"
+    }
+   }
+  },
+  "Q13": {
+   "panel": "old",
+   "s1": [
+    "src/finiteVolume/finiteVolume/fvm/fvm.H",
+    "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H"
+   ],
+   "s2": [
+    "src/finiteVolume/finiteVolume/fvm/fvm.H",
+    "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H",
+    "src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.H"
+   ],
+   "inter": [
+    "src/finiteVolume/finiteVolume/fvm/fvm.H",
+    "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H"
+   ],
+   "union": [
+    "src/finiteVolume/finiteVolume/fvm/fvm.H",
+    "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H",
+    "src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/finiteVolume/fvm/fvm.H": {
+     "start_line": 27,
+     "evidence": "Namespace of functions to calculate implicit derivatives returning a",
+     "why": "fvm 命名空间的隐式导数函数返回矩阵，是各项贡献被组装进矩阵的入口。"
+    },
+    "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H": {
+     "start_line": 27,
+     "evidence": "A special matrix type and solver, designed for finite volume",
+     "why": "filedoc 说明这是为有限体积标量方程设计的矩阵类型，靠面 addressing 组装并求解。"
+    },
+    "src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.H": {
+     "start_line": 27,
+     "evidence": "A scalar instance of fvMatrix",
+     "why": "fvScalarMatrix 是标量输运方程实际组装的矩阵类型"
+    }
+   }
+  },
+  "Q14": {
+   "panel": "old",
+   "s1": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/wallCellWallFunction/wallCellWallFunctionFvPatchScalarField.H"
+   ],
+   "s2": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/phaseCompressible/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonmWallFunction/epsilonmWallFunctionFvPatchScalarField.H"
+   ],
+   "inter": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H"
+   ],
+   "union": [
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/wallCellWallFunction/wallCellWallFunctionFvPatchScalarField.H",
+    "src/MomentumTransportModels/phaseCompressible/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonmWallFunction/epsilonmWallFunctionFvPatchScalarField.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "This boundary condition provides a turbulence dissipation wall constraint",
+     "why": "filedoc 说明该壁面边界条件给出近壁 epsilon 值与生成项 G 的壁面约束。"
+    },
+    "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/wallCellWallFunction/wallCellWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "Base class for wall functions that modify cell values",
+     "why": "声明这类壁函数通过改写壁面邻近单元值来施加壁面约束，即 epsilon 的具体施加机制。"
+    },
+    "src/MomentumTransportModels/phaseCompressible/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonmWallFunction/epsilonmWallFunctionFvPatchScalarField.H": {
+     "start_line": 27,
+     "evidence": "This boundary condition provides a turbulence dissipation wall constraint\n    for the mixtureKEpsilon model",
+     "why": "混合（mixtureKEpsilon）情形下的耗散壁面约束"
+    }
+   }
+  },
+  "U01": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/TimeIO.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/db/Time/TimeIO.C",
+    "src/OpenFOAM/db/dictionary/dictionaryTemplates.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/db/Time/TimeIO.C"
+   ],
+   "union": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/TimeIO.C",
+    "src/OpenFOAM/db/dictionary/dictionaryTemplates.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/db/Time/TimeIO.C": {
+     "start_line": 30,
+     "evidence": "if (controlDict_.readIfPresent(\"purgeWrite\", purgeWrite_))\n    {\n        if (purgeWrite_ < 0)",
+     "why": "readDict 是启动时把 controlDict 读进 Time 的那段；readIfPresent 只在键存在时覆盖，缺项就保留类里已有的默认值"
+    },
+    "src/OpenFOAM/db/Time/Time.C": {
+     "start_line": 99,
+     "evidence": "const word startFrom = controlDict_.lookupOrDefault<word>\n    (\n        \"startFrom\",\n        \"latestTime\"\n    );",
+     "why": "setControls 读 controlDict 的 startFrom 项时用 lookupOrDefault 显式给出缺项默认值 latestTime——这就是\"某项没写时该用哪个默认值\"的那行判据"
+    },
+    "src/OpenFOAM/db/dictionary/dictionaryTemplates.C": {
+     "start_line": 221,
+     "evidence": "T Foam::dictionary::lookupOrDefault\n(\n    const word& keyword,\n    const T& defaultValue,\n    const bool writeDefault\n) const",
+     "why": "lookupOrDefault 就是「没写时用哪个默认值」的实现：找不到 entry 就 return defaultValue"
+    }
+   }
+  },
+  "U02": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/Time/userTime/userTime/userTimeNew.C",
+    "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H"
+   ],
+   "s2": [
+    "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H",
+    "src/finiteVolume/fields/fvPatchFields/fvPatchField/fvPatchFieldNew.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H"
+   ],
+   "union": [
+    "src/OpenFOAM/db/Time/userTime/userTime/userTimeNew.C",
+    "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H",
+    "src/finiteVolume/fields/fvPatchFields/fvPatchField/fvPatchFieldNew.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/db/Time/userTime/userTime/userTimeNew.C": {
+     "start_line": 36,
+     "evidence": "FatalIOErrorInFunction(controlDict)\n                << \"Unknown userTime \" << type << nl << nl\n                << \"Valid userTime types are :\" << nl",
+     "why": "从设置字典读出 type 名字、在构造函数表里 find；查不到就 FatalIOError 打出 Unknown userTime 并列出全部合法名字"
+    },
+    "src/OpenFOAM/db/runTimeSelection/construction/runTimeSelectionTables.H": {
+     "start_line": 35,
+     "evidence": "typedef HashTable<argNames##ConstructorPtr, word, string::hash>            \\\n        argNames##ConstructorTable;",
+     "why": "这张对照表就是构造函数表：以 word（设置文件里写的名字）为键、构造函数指针为值的 HashTable"
+    },
+    "src/finiteVolume/fields/fvPatchFields/fvPatchField/fvPatchFieldNew.C": {
+     "start_line": 127,
+     "evidence": "if (cstrIter == dictionaryConstructorTablePtr_->end())\n        {\n            FatalIOErrorInFunction\n            (\n                dict\n            )   << \"Unknown patchField type \"",
+     "why": "在字典里写下 type 名后到此查表；查不到就报 \"Unknown patchField type\" 并列 Valid patchField types"
+    }
+   }
+  },
+  "U03": {
+   "panel": "new",
+   "s1": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "s2": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C"
+   ],
+   "inter": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C"
+   ],
+   "union": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/matrices/LduMatrix/LduMatrix/SolverPerformance.C": {
+     "start_line": 101,
+     "evidence": "os  << indent << solverName_ << \":  Solving for \" << fieldName_;",
+     "why": "每次线性求解结束时打印的进度行（Solving for Ux, Initial residual = ..., Final residual = ..., No Iterations ...）就在这里拼"
+    },
+    "applications/solvers/foamRun/foamRun.C": {
+     "start_line": 67,
+     "evidence": "Info<< \"Time = \" << runTime.userTimeName() << nl << endl;",
+     "why": "时间推进循环每推进一个时间步打一行 Time = ...；节奏由 while (pimple.run(runTime)) 与 runTime++ 决定"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C": {
+     "start_line": 65,
+     "evidence": "if (nCorr_ > 1)\n        {\n            Info<< control_.algorithmName() << \": Iteration \" << corr_",
+     "why": "外层修正循环的打印节奏：只有 nCorr_ > 1 时才每轮打一行 PIMPLE: Iteration N"
+    }
+   }
+  },
+  "U04": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/IOobject/IOobject.C",
+    "src/OpenFOAM/db/Time/Time.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/db/IOobject/IOobject.C",
+    "src/OpenFOAM/db/Time/Time.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/db/IOobject/IOobject.C",
+    "src/OpenFOAM/db/Time/Time.C"
+   ],
+   "union": [
+    "src/OpenFOAM/db/IOobject/IOobject.C",
+    "src/OpenFOAM/db/Time/Time.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/db/IOobject/IOobject.C": {
+     "start_line": 383,
+     "evidence": "return rootPath()/caseName(global)/instance()/db_.dbDir()/local();",
+     "why": "一份结果写到磁盘时落在哪个目录，就是这一行拼出来的：rootPath/算例名/时间名(instance)/dbDir/local"
+    },
+    "src/OpenFOAM/db/Time/Time.C": {
+     "start_line": 628,
+     "evidence": "buf.precision(precision);\n    buf << t;",
+     "why": "编号的排法：把时间值按 format_ 与 precision 送进 ostringstream，位数不够时的补零/截断就发生在这里"
+    }
+   }
+  },
+  "U05": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/findTimes.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/findTimes.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/findTimes.C"
+   ],
+   "union": [
+    "src/OpenFOAM/db/Time/Time.C",
+    "src/OpenFOAM/db/Time/findTimes.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/db/Time/findTimes.C": {
+     "start_line": 24,
+     "evidence": "Searches the current case directory for valid times\n    and sets the time list to these.",
+     "why": "真的去算例目录上找\"上一次存下的那一份\"：findTimes 扫目录得到有效时间列表，供上面的 latestTime 分支取用"
+    },
+    "src/OpenFOAM/db/Time/Time.C": {
+     "start_line": 99,
+     "evidence": "else if (startFrom == \"latestTime\")\n        {\n            if (timeDirs.size())\n            {\n                startTime_ = userTimeToTime(timeDirs.last().value());",
+     "why": "startFrom 默认 latestTime：取目录里扫出的时间列表的最后一个，作为\"接着上次存下的那份继续算\"的起点"
+    }
+   }
+  },
+  "U06": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/IOstreams/Pstreams/PstreamReduceOps.H",
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.C"
+   ],
+   "s2": [
+    "src/parallel/parallel/domainDecomposition/domainDecompositionDecompose.C",
+    "src/parallel/parallel/domainDecomposition/domainDecompositionReconstruct.C"
+   ],
+   "inter": [],
+   "union": [
+    "src/OpenFOAM/db/IOstreams/Pstreams/PstreamReduceOps.H",
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.C",
+    "src/parallel/parallel/domainDecomposition/domainDecompositionDecompose.C",
+    "src/parallel/parallel/domainDecomposition/domainDecompositionReconstruct.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/parallel/decompose/decompositionMethods/decompositionMethod/decompositionMethod.C": {
+     "start_line": 104,
+     "evidence": "nProcessors_(decompositionDict.lookup<label>(\"numberOfSubdomains\"))",
+     "why": "活切成 N 份里的 N 就是这里从 decomposeParDict 的 numberOfSubdomains 读出来的；decompose() 返回每个单元归哪个进程"
+    },
+    "src/OpenFOAM/db/IOstreams/Pstreams/PstreamReduceOps.H": {
+     "start_line": 63,
+     "evidence": "Pstream::gather(comms, Value, bop, tag, comm);\n    Pstream::scatter(comms, Value, tag, comm);",
+     "why": "汇总的具体走法：先 gather 到根进程做 bop，再 scatter 回去，于是每个进程都拿到同一份合并结果"
+    },
+    "src/parallel/parallel/domainDecomposition/domainDecompositionDecompose.C": {
+     "start_line": 279,
+     "evidence": "// Decide which cell goes to which processor\n    cellProc_ = distributeCells();",
+     "why": "decompose() 先用 distributeCells 决定每个单元归哪个 processor，再把单元分发到各进程"
+    },
+    "src/parallel/parallel/domainDecomposition/domainDecompositionReconstruct.C": {
+     "start_line": 139,
+     "evidence": "void Foam::domainDecomposition::reconstruct()\n{\n    Info<< \"Reconstructing meshes\"",
+     "why": "reconstruct() 把各 processor 的网格与场合并回完整网格，即「最后收回来汇总」"
+    }
+   }
+  },
+  "U07": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/global/argList/argList.C",
+    "src/OpenFOAM/global/argList/argList.H"
+   ],
+   "s2": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/global/argList/argList.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/global/argList/argList.C"
+   ],
+   "union": [
+    "applications/solvers/foamRun/foamRun.C",
+    "src/OpenFOAM/global/argList/argList.C",
+    "src/OpenFOAM/global/argList/argList.H"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/global/argList/argList.H": {
+     "start_line": 27,
+     "evidence": "Extract command arguments and options from the supplied\n    \\a argc and \\a argv parameters.",
+     "why": "argList 的职责说明：从 argc/argv 里把参数与选项抽出来"
+    },
+    "src/OpenFOAM/global/argList/argList.C": {
+     "start_line": 604,
+     "evidence": "//   -help    print the usage\n    //   -doc     display application documentation in browser\n    //   -srcDoc  display source code in browser",
+     "why": "解析之后的动作分派就在 parse() 开头：-help/-doc/-srcDoc 这类参数决定这次是打用法、开浏览器还是继续正常算"
+    },
+    "applications/solvers/foamRun/foamRun.C": {
+     "start_line": 67,
+     "evidence": "// Read the solverName from the optional solver entry in controlDict\n    word solverName\n    (\n        runTime.controlDict().lookupOrDefault(\"solver\", word::null)\n    );",
+     "why": "哪个参数决定这次干什么：solver 名（-solver 或 controlDict 的 solver 项）决定分派到哪个求解器模块"
+    }
+   }
+  },
+  "U08": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/db/error/IOerror.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/db/error/IOerror.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/db/error/IOerror.C"
+   ],
+   "union": [
+    "src/OpenFOAM/db/error/IOerror.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/db/error/IOerror.C": {
+     "start_line": 119,
+     "evidence": "<< \"file: \" << ioStream.name()\n            << \" at line \" << ioStream.lineNumber()",
+     "why": "这条报错文字把文件和第几行一起拼出来：\"file: <名字> at line <行号>\"，定位信息就是从输入流的 name()/lineNumber() 取的"
+    }
+   }
+  },
+  "U09": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/primitives/functions/Function1/Table/Table.C",
+    "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C",
+    "src/OpenFOAM/primitives/functions/Function1/UniformTable1/UniformTable1.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/primitives/functions/Function1/Table/Table.C",
+    "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/primitives/functions/Function1/Table/Table.C",
+    "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C"
+   ],
+   "union": [
+    "src/OpenFOAM/primitives/functions/Function1/Table/Table.C",
+    "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C",
+    "src/OpenFOAM/primitives/functions/Function1/UniformTable1/UniformTable1.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/primitives/functions/Function1/Table/Table.C": {
+     "start_line": 269,
+     "evidence": "forAll(indices_, i)\n    {\n        y += weights_[i]*values_[indices_[i]].second();",
+     "why": "表里没有正好对上的 x 时：value() 先用 valueWeights 算出夹住 x 的那几点的权重，这里再对这些值加权求和"
+    },
+    "src/OpenFOAM/primitives/functions/Function1/UniformTable1/UniformTable1.C": {
+     "start_line": 61,
+     "evidence": "const scalar xi = low_ + i*delta_;\n    const scalar lambda = (x - xi)/delta_;\n\n    return values_[i] + lambda*(values_[i + 1] - values_[i]);",
+     "why": "等距表里最直白的补值公式：定出 x 落在第 i 格、算出格内比例 lambda，再在两端值之间线性插值"
+    },
+    "src/OpenFOAM/primitives/functions/Function1/Table/TableReader/TableFileReader/TableFileReader.C": {
+     "start_line": 48,
+     "evidence": "// Expand the file\n    fileName fNameExpanded(fName_);\n    fNameExpanded.expand();\n\n    // Open a stream and check it\n    autoPtr<ISstream> isPtr(fileHandler().NewIFstream(fNameExpanded));",
+     "why": "外部数值表就是这么读进来的：先展开文件名，再开输入流，随后 read(is, table) 解析成 (x, 值) 列表"
+    }
+   }
+  },
+  "U10": {
+   "panel": "new",
+   "s1": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/singleRegionConvergenceControl/singleRegionConvergenceControl.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "s2": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "inter": [
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "union": [
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/singleRegionConvergenceControl/singleRegionConvergenceControl.C",
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleLoop/pimpleLoop.C": {
+     "start_line": 65,
+     "evidence": "if (corr_ >= nCorr_)\n        {\n            if (convergence.hasCorrResidualControls() && nCorr_ > 1)\n            {\n                Info<< control_.algorithmName() << \": Not converged within \"",
+     "why": "两个判据在这里合流：上轮已 converged 就提前收工并打印 Converged in N iterations；否则轮数到 nCorr_ 就打印 Not converged within N iterations 停下"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/singleRegionConvergenceControl/singleRegionConvergenceControl.C": {
+     "start_line": 144,
+     "evidence": "const bool absCheck = residual < residualControl_[fieldi].absTol;\n\n            cs.satisfied = cs.satisfied && absCheck;",
+     "why": "判断算得够不够稳：各场当前残差与设置里的 tolerance（absTol）逐个比，全达标才置 satisfied，这就是可以收工的条件"
+    },
+    "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.C": {
+     "start_line": 87,
+     "evidence": "Info<< nl << control_.algorithmName() << \" solution converged in \"\n            << control_.time().name() << \" iterations\"",
+     "why": "converged() 用 criteriaSatisfied() 判残差是否够稳，够稳就打印 solution converged 并返回 true 收工"
+    }
+   }
+  },
+  "U11": {
+   "panel": "new",
+   "s1": [
+    "src/OpenFOAM/unitConversion/unitConversion.C",
+    "src/OpenFOAM/unitConversion/unitConversionIO.C",
+    "src/OpenFOAM/unitConversion/unitConversionTemplates.C"
+   ],
+   "s2": [
+    "src/OpenFOAM/unitConversion/unitConversion.C",
+    "src/OpenFOAM/unitConversion/unitConversionIO.C"
+   ],
+   "inter": [
+    "src/OpenFOAM/unitConversion/unitConversion.C",
+    "src/OpenFOAM/unitConversion/unitConversionIO.C"
+   ],
+   "union": [
+    "src/OpenFOAM/unitConversion/unitConversion.C",
+    "src/OpenFOAM/unitConversion/unitConversionIO.C",
+    "src/OpenFOAM/unitConversion/unitConversionTemplates.C"
+   ],
+   "no_statement_found": false,
+   "evidence": {
+    "src/OpenFOAM/unitConversion/unitConversionTemplates.C": {
+     "start_line": 28,
+     "evidence": "return standard() ? t : t*multiplier_;",
+     "why": "量纲对得上但换算因子不同时走这一行：把读进来的数乘 multiplier_ 转成标准单位的值"
+    },
+    "src/OpenFOAM/unitConversion/unitConversion.C": {
+     "start_line": 157,
+     "evidence": "if (!unitConversion::compare(a, b, true))\n    {\n        FatalErrorInFunction\n            << \"Different units for +\"",
+     "why": "带单位的量相加时再查一次单位一致（连换算因子一起比），不一致直接 FatalError: Different units for +"
+    },
+    "src/OpenFOAM/unitConversion/unitConversionIO.C": {
+     "start_line": 41,
+     "evidence": "FatalIOErrorInFunction(dict)\n            << \"The units \" << units.info() << \" of \" << keyword\n            << \" in dictionary \" << dict.name() << \" do not match \"",
+     "why": "从设置里读出 [单位] 之后立刻 compare：维度对不上就 FatalIOError 报 The units ... do not match the required units，不换算直接报错的那条路"
+    }
+   }
+  },
+  "U12": {
+   "panel": "new",
+   "s1": [],
+   "s2": [],
+   "inter": [],
+   "union": [],
+   "no_statement_found": true,
+   "evidence": {}
+  }
+ }
+}

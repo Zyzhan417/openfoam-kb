@@ -1,0 +1,209 @@
+{
+ "version": 1,
+ "feature": "006-agent-task-eval",
+ "panel": "12 条 positive（有唯一靶心文件）+ 2 条 excluded（原拟作负样本，实测前提被推翻，不进入任何分母，见 falsified_negative_reason）",
+ "baseline_note": "baseline_rank 取自 reports/2026-10-25-vector-channel-decision-test.md §2.2 的 A0 列（CLI top_k=20）；null = 前 20 名外。两个分母：positive-only=12，all=14。",
+ "evidence_note": "positive 的 evidence 必须是 target_path 里 filedoc 块正文的逐字切片（门禁机械核对）；excluded 的 evidence 是「旧靶心不含核心词」的原文摘录，另见 falsified_negative_reason。",
+ "questions": [
+  {
+   "qid": "Q01",
+   "query": "incompressible turbulence model",
+   "kind": "positive",
+   "target_path": "src/MomentumTransportModels/incompressible/incompressibleMomentumTransportModels.H",
+   "target_basename": "incompressibleMomentumTransportModels.H",
+   "baseline_rank": 3,
+   "source": "003 SC-002（另见 004 SC-004 混写组）",
+   "evidence_block": {
+    "start_line": 33,
+    "end_line": 37
+   },
+   "evidence": "Description\n    Typedefs for turbulence, RAS and LES models for incompressible flow\n    based on the standard laminar transport package.\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q02",
+   "query": "wall function for nut",
+   "kind": "positive",
+   "target_path": "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/nutWallFunctions/nutUSpaldingWallFunction/nutUSpaldingWallFunctionFvPatchScalarField.H",
+   "target_basename": "nutUSpaldingWallFunctionFvPatchScalarField.H",
+   "baseline_rank": 7,
+   "source": "003 SC-003（另见 004 SC-004 混写组）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 67
+   },
+   "evidence": "Description\n    This boundary condition provides a turbulent kinematic viscosity condition\n    when using wall functions for rough walls, based on velocity,  using\n    Spalding's law to give a continuous nut profile to the wall (y+ = 0)\n\n    \\f[\n        y^+ = u^+ + \\frac{1}{E} \\left[exp(\\kappa u^+) - 1 - \\kappa u^+\\,\n            - 0.5 (\\kappa u^+)^2 - \\frac{1}{6} (\\kappa u^+)^3\\right]\n    \\f]"
+  },
+  {
+   "qid": "Q03",
+   "query": "turbulent kinetic energy dissipation",
+   "kind": "positive",
+   "target_path": "src/MomentumTransportModels/momentumTransportModels/RAS/kEpsilon/kEpsilon.H",
+   "target_basename": "kEpsilon.H",
+   "baseline_rank": 10,
+   "source": "003 SC-006",
+   "evidence_block": {
+    "start_line": 186,
+    "end_line": 189
+   },
+   "evidence": "        //- Return the turbulence kinetic energy dissipation rate\n        virtual tmp<volScalarField> epsilon() const\n        {\n            return epsilon_;",
+   "evidence_note": "原 evidence 引的是 filedoc「Standard k-epsilon turbulence model…」，那句话是 topic 而非概念本身；「turbulence kinetic energy dissipation」逐字出现在 class 块的 member 注释（line 186）。2026-10-26 由 T012 独立复核指出后改引。**不改靶心、不改判定**，evidence 只供人复核。"
+  },
+  {
+   "qid": "Q04",
+   "query": "spalart allmaras turbulence model",
+   "kind": "positive",
+   "target_path": "src/MomentumTransportModels/momentumTransportModels/RAS/SpalartAllmaras/SpalartAllmaras.H",
+   "target_basename": "SpalartAllmaras.H",
+   "baseline_rank": 5,
+   "source": "003 SC-006",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 66
+   },
+   "evidence": "Description\n    Spalart-Allmaras one-eqn mixing-length model for incompressible and\n    compressible external flows.\n\n    Reference:\n    \\verbatim\n        Spalart, P.R., & Allmaras, S.R. (1994).\n        A one-equation turbulence model for aerodynamic flows.\n        La Recherche Aerospatiale, 1, 5-21.\n    \\endverbatim\n\n    The model is implemented without the trip-term and hence the ft2 term is"
+  },
+  {
+   "qid": "Q05",
+   "query": "finite volume mesh",
+   "kind": "positive",
+   "target_path": "src/finiteVolume/fvMesh/fvMesh.H",
+   "target_basename": "fvMesh.H",
+   "baseline_rank": null,
+   "source": "003 SC-006（005 C3：排序属已知行为）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 45
+   },
+   "evidence": "Description\n    Mesh data needed to do the Finite Volume discretisation.\n\n    NOTE ON USAGE:\n    fvMesh contains all the topological and geometric information\n    related to the mesh.  It is also responsible for keeping the data\n    up-to-date.  This is done by deleting the cell volume, face area,\n    cell/face centre, addressing and other derived information as"
+  },
+  {
+   "qid": "Q06",
+   "query": "boundary conditions for pressure",
+   "kind": "excluded",
+   "no_single_source_reason": "语料里没有一个文件在陈述「pressure 的边界条件」这一整体概念。旧靶心 fixedValueFvPatchField.H 的说明段逐字为「This boundary condition supplies a fixed value constraint, and is the base class for a number of other boundary conditions.」——不含 pressure 一词；报告 §2.4 换测的 zeroGradientFvPatchField.H 在 A0 下名次 240，同样不是该概念的陈述处。",
+   "source": "003 SC-006 旧行（005 移出验收表；M1 报告 §2.4 复核）",
+   "evidence": "This boundary condition supplies a fixed value constraint, and is\nthe base class for a number of other boundary conditions.",
+   "evidence_source": "reports/2026-10-25-vector-channel-decision-test.md §2.4（引自 fixedValueFvPatchField.H 的 Description）",
+   "old_target": "src/finiteVolume/fields/fvPatchFields/basic/fixedValue/fixedValueFvPatchField.H",
+   "negative_key_term": "pressure",
+   "falsified_negative_reason": "原按 C3 记为「语料里没有单一陈述处」的负样本。2026-10-26 两臂各 1 次独立运行后该前提被推翻：A/B 两臂都交出 `pressureFvPatchScalarField.H`，其 Description 逐字写着「Static pressure boundary condition / Used as the base-class for static pressure boundary conditions」——这正是「pressure 的边界条件」的陈述处。旧靶心 fixedValueFvPatchField.H 里 `pressure` 0 次是真的，但「语料无单一陈述处」是假的：错在只查了旧靶心和 1 个替代(target)，没有全库搜。",
+   "excluded_evidence_refs": [
+    "2cf4316a:src/finiteVolume/fields/fvPatchFields/derived/pressure/pressureFvPatchScalarField.H::27"
+   ]
+  },
+  {
+   "qid": "Q07",
+   "query": "pressure velocity coupling",
+   "kind": "excluded",
+   "no_single_source_reason": "旧靶心 pimpleNoLoopControl.H 的说明段逐字为「Pimple no-loop control class. Implements various option flags, but leaves loop controls to the derivation or owner.」——不提压力-速度耦合；pimpleControl.H 的说明段整段为空。报告 §2.4 换测的 LienLeschziner.H 在 A0 下名次 643。该概念在语料里没有单一陈述处。",
+   "source": "004/005「M1 判据样例」（005 移出验收表；M1 报告 §2.4 订正为「无单一陈述处」样例）",
+   "evidence": "Pimple no-loop control class. Implements various option flags, but\nleaves loop controls to the derivation or owner.",
+   "evidence_source": "reports/2026-10-25-vector-channel-decision-test.md §2.4（引自 pimpleNoLoopControl.H 的 Description）",
+   "old_target": "src/finiteVolume/cfdTools/general/solutionControl/pimpleControl/pimpleNoLoopControl/pimpleNoLoopControl.H",
+   "negative_key_term": "pressure",
+   "falsified_negative_reason": "原按 C3 记为「语料里没有单一陈述处」的负样本。2026-10-26 两臂各 1 次独立运行后该前提被推翻：A/B 两臂都交出 `applications/modules/incompressibleFluid/correctPressure.C`，其中 `pEqn` 与 `pimple.correctNonOrthogonal()` 就是压力-速度耦合的实现。旧靶心 pimpleNoLoopControl.H 里 `pressure` 0 次是真的，但「语料无单一陈述处」是假的。",
+   "excluded_evidence_refs": [
+    "2cf4316a:applications/modules/incompressibleFluid/correctPressure.C::37"
+   ]
+  },
+  {
+   "qid": "Q08",
+   "query": "how is the pressure level fixed in a closed domain",
+   "kind": "positive",
+   "target_path": "src/finiteVolume/cfdTools/general/pressureReference/pressureReference.H",
+   "target_basename": "pressureReference.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 34
+   },
+   "evidence": "Description\n    Provides controls for the pressure reference in closed-volume simulations\n\nSourceFiles\n    pressureReferenceI.H\n    pressureReference.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q09",
+   "query": "how is the mesh split across processors",
+   "kind": "positive",
+   "target_path": "src/parallel/parallel/domainDecomposition/domainDecomposition.H",
+   "target_basename": "domainDecomposition.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 36
+   },
+   "evidence": "Description\n    Automatic domain decomposition class for finite-volume meshes\n\nSourceFiles\n    domainDecomposition.C\n    domainDecompositionDecompose.C\n    domainDecompositionReconstruct.C\n    domainDecompositionReconstruct.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q10",
+   "query": "how are field values mapped from cells to faces",
+   "kind": "positive",
+   "target_path": "src/finiteVolume/interpolation/surfaceInterpolation/surfaceInterpolation/surfaceInterpolation.H",
+   "target_basename": "surfaceInterpolation.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 33
+   },
+   "evidence": "Description\n    Cell to surface interpolation scheme. Included in fvMesh.\n\nSourceFiles\n    surfaceInterpolation.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q11",
+   "query": "how does the solver move the mesh",
+   "kind": "positive",
+   "target_path": "src/motionSolvers/motionSolver/motionSolver.H",
+   "target_basename": "motionSolver.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 33
+   },
+   "evidence": "Description\n    Virtual base class for mesh motion solver.\n\nSourceFiles\n    motionSolver.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q12",
+   "query": "what stops a run when residuals stop falling",
+   "kind": "positive",
+   "target_path": "src/finiteVolume/cfdTools/general/solutionControl/convergenceControl/convergenceControl/convergenceControl.H",
+   "target_basename": "convergenceControl.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 35
+   },
+   "evidence": "Description\n    Convergence control class. Provides methods to check the convergence of the\n    time loop against an absolute residual tolerance.\n\nSourceFiles\n    convergenceControl.C\n    convergenceControlTemplates.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q13",
+   "query": "how is a scalar transport equation assembled into a matrix",
+   "kind": "positive",
+   "target_path": "src/finiteVolume/fvMatrices/fvMatrix/fvMatrix.H",
+   "target_basename": "fvMatrix.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 38
+   },
+   "evidence": "Description\n    A special matrix type and solver, designed for finite volume\n    solutions of scalar equations.\n    Face addressing is used to make all matrix assembly\n    and solution loops vectorise.\n\nSourceFiles\n    fvMatrix.C\n    fvMatrixSolve.C\n    fvScalarMatrix.C\n\n\\*---------------------------------------------------------------------------*/"
+  },
+  {
+   "qid": "Q14",
+   "query": "how is turbulence dissipation handled at the wall",
+   "kind": "positive",
+   "target_path": "src/MomentumTransportModels/momentumTransportModels/derivedFvPatchFields/wallFunctions/epsilonWallFunctions/epsilonWallFunction/epsilonWallFunctionFvPatchScalarField.H",
+   "target_basename": "epsilonWallFunctionFvPatchScalarField.H",
+   "baseline_rank": null,
+   "source": "M1 实验补写（2026-10-25）",
+   "evidence_block": {
+    "start_line": 27,
+    "end_line": 62
+   },
+   "evidence": "Description\n    This boundary condition provides a turbulence dissipation wall constraint\n    for low- and high-Reynolds number turbulence models.\n\n    The condition can be applied to wall boundaries for which it\n    - calculates \\c epsilon and \\c G\n    - specifies the near-wall epsilon value\n\n    where\n\n    \\vartable\n        epsilon | turbulence dissipation field"
+  }
+ ],
+ "scoring_note": "分母永远只有 12 条 positive。excluded 的两条只作为「负样本构念是否成立」的实测留档：它们证明「找一条语料真没陈述的概念」比预想难得多。"
+}

@@ -1,0 +1,68 @@
+{
+ "name": "006 任务级判定的引文判据（A21 双向）",
+ "file": "scripts/judge_core.py",
+ "requires_two_sided": true,
+ "green_command": [
+  "scripts/self_test_judge.py"
+ ],
+ "_comment": [
+  "判定函数 quote_ok 决定一条引文能否被算作证据。两个方向都必须把对应用例打红（AGENTS A21）：",
+  "  alpha 置恒 True  = 不检查引文 → 'quote that is not in the block' 必须从 fabrication 变 done（自测红）",
+  "  beta  置恒 False = 任何引文都不算证据 → 'verbatim quote from a cited ref' 必须从 done 变 fabrication（自测红）",
+  "  ref ∈ transcript 判据同样双向：置 True = 一切答案都算「绕过工具」；置 False = 绕过工具永不被抓。",
+  "只验一个方向时，另一侧回归会照样发布：项目里 '为什么固定值边界条件能过' 这类问题就是这么漏的。",
+  "green_command 是恢复后必须重新变绿的那一半（self_test_judge 9/9）；",
+  "它替代 pytest 的原因：判定器在 scripts/ 下，没有 pytest node id，且 tests/ 属子代理（E17）。",
+  "2026-10-26：判定函数拆到 judge_core.py（C11 400/50 行上限），file 随之从 judge_runs.py 改为 judge_core.py。拆分前变异计数全为 0 —— A4 说的「零改动意味着实验没跑」，门禁正确报红。"
+ ],
+ "mutations": [
+  {
+   "id": "alpha-always-true",
+   "old": "    return bool(quote) and quote in block",
+   "new": "    return True  # MUTANT: 不检查引文，任何引用都算证据",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  },
+  {
+   "id": "beta-always-false",
+   "old": "    return bool(quote) and quote in block",
+   "new": "    return False  # MUTANT: 任何引文都不算证据，判定全灭",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  },
+  {
+   "id": "gamma-transcript-check-always-true",
+   "old": "    if not in_transcript:",
+   "new": "    if True:  # MUTANT: 一切答案都判成绕过工具",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  },
+  {
+   "id": "delta-transcript-check-always-false",
+   "old": "    if not in_transcript:",
+   "new": "    if False:  # MUTANT: 绕过工具永不被抓",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  },
+  {
+   "id": "epsilon-accept-always-true",
+   "old": "        if path not in accept:",
+   "new": "        if False:  # MUTANT: accept 判据全灭，任何在集合外的文件也算对",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  },
+  {
+   "id": "zeta-accept-always-false",
+   "old": "        if path not in accept:",
+   "new": "        if True:  # MUTANT: accept 判据恒拒，连集合内的文件也不算对",
+   "must_fail_command": [
+    "scripts/self_test_judge.py"
+   ]
+  }
+ ]
+}
